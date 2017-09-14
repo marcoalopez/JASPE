@@ -62,4 +62,4 @@ azimuths, dips = sph_to_eq_area(dataset['Trend'], dataset['Plunge'])
 ax2.plot(azimuths, dips, 'h', color='C3', markersize=9, label='Kamb (1959) data')
 ax2.legend()
 ```
-![](https://raw.githubusercontent.com/marcoalopez/JASPE/blob/master/figs/example.png)
+![](https://raw.githubusercontent.com/marcoalopez/JASPE/master/figs/example.png)
