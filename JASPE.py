@@ -187,8 +187,8 @@ def sph_to_cart(trend, dip):
 
 
 def cart_to_sph(north_cos, east_cos, down_cos):
-    """Convert from cartesian to spherical coordinates...TODO
-    It returns the trend and the plunge of a line (spherical coordinates).
+    """Convert from cartesian to spherical coordinates. It returns the
+    azimuth and the plunge of a line (spherical coordinates).
 
     Parameters
     ----------
@@ -206,7 +206,48 @@ def cart_to_sph(north_cos, east_cos, down_cos):
     a numpy array with the spherical coordinates (azimuth, dip)
     """
 
-    return None
+    # calculate dip
+    dip = np.arcsin(down_cos)
+
+    # calculate azimuth
+    if north_cos == 0.0:  # north direction cosine zero case
+        if east_cos < 0.0:
+            azimuth = (3 / 2) * np.pi  # trend is West
+        else:
+            azimuth = (1 / 2) * np.pi  # trend is East
+
+    else:
+        azimuth = np.arctan(east_cos / north_cos)
+
+        if north_cos < 0.0:
+            azimuth = azimuth + np.pi
+
+        # Check whether azimuth lies between 0 and 2*pi radians
+        azimuth = zero_to_pi(azimuth)
+
+    # convert radians to degrees
+    azimuth = np.rad2deg(azimuth)
+    dip = np.rad2deg(dip)
+
+    return azimuth, dip
+
+
+def zero_to_pi(azimuth):
+    """Constrains azimuth between 0 and 2*pi radians
+
+    Parameter
+    ---------
+    azimuth: float
+        the azimuth in radians
+    """
+
+    if azimuth < 0.0:
+        azimuth = azimuth + (2 * np.pi)
+
+    elif azimuth >= 0.0:
+        azimuth = azimuth - (2 * np.pi)
+
+    return azimuth
 
 
 def import_data(file_path='auto', delimiter=None, skiprows=None):
@@ -220,11 +261,11 @@ def import_data(file_path='auto', delimiter=None, skiprows=None):
         e.g: 'C:/...yourFileLocation.../nameOfTheFile.csv'
         If 'auto' (the default) the function will ask you for the location of
         the file through a file selection dialog.
-    
+
     delimiter: string or None (default)
         Delimiter to use. The pandas method try to automatically detect the
         separator, but it can be defined by the user.
-    
+
     skiprows: integer, list-like or callable. Default None
         Line numbers to skip (0-indexed) or number of lines to skip (int) at the
         start of the text file.
@@ -269,12 +310,12 @@ def import_data(file_path='auto', delimiter=None, skiprows=None):
 def plot_projection(ax, form='area'):
     """Plot a text indicating whether the projection is equal-area
     or equal-angle
-    
+
     Parameters
     ----------
     ax:
         the Matplotlib axe
-    
+
     form: string
         'area' for equal-area, 'angle' for equal-angle
     """
