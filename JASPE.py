@@ -22,7 +22,7 @@
 #    Covered Software is authorized under this License except under this       #
 #    disclaimer.                                                               #
 #                                                                              #
-#    Version alpha  0.1                                                        #
+#    Version alpha  0.1.1                                                      #
 #    For details see: https://github.com/marcoalopez/JASPE                     #
 #    download at https://github.com/marcoalopez/JASPE/releases                 #
 #                                                                              #
@@ -50,8 +50,11 @@ def set_stereo(ax):
     """Tweak the matplotlib figure axes to plot a stereographic projection of
     unit radius.
 
+    Parameters
+    ----------
     ax: a matplotlib object
-        the axes"""
+        the axes
+    """
 
     # remove default matplotlib elements with no interest
     ax.tick_params(
@@ -80,14 +83,22 @@ def plot_data(trend, dip, ax, form='area'):
 
     Parameters
     ----------
-    trend: an integer, float or array_like with values between 0 and 360
+    trend: integer, float or array_like with values between 0 and 360
         line direction (azimuth; 0 - 360 degrees)
 
-    dip: an integer, float or array_like with values between 0 and 90
+    dip: integer, float or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
 
-    form: a string
+    ax: matplotlib object
+        the matplotlib axe
+
+    form: string
         type of plot, either equal 'area' or equal 'angle'. Equal area as default.
+
+    Examples
+    --------
+    >>> plot_data(180, 45, ax)  # equal-area projection (by default)
+    >>> plot_data(93, 38, ax, form='angle')  # equal-angle projection
     """
 
     if form == 'area':
@@ -203,7 +214,7 @@ def cart_to_sph(north_cos, east_cos, down_cos):
 
     Returns
     -------
-    a numpy array with the spherical coordinates (azimuth, dip)
+    a numpy array with spherical coordinates (azimuth, dip)
     """
 
     # calculate dip
