@@ -1,8 +1,10 @@
 # JASPE
 
-**JASPE** stands for **J**ust **A**nother **S**tereoplot **P**ython **E**nvironment. This is a pet project that I develop at my own pace and according to my needs and preferences. The script is therefore not primarily intended for general use but my own. You should not expect updates, new features, or bug fixes in reasonable times. Nor can I assure you that the project will be abandoned for a large period of time. My main goal with this is to include stereographic/equal-area projections in my Python work flow while interacting with standard Python scientific libraries. If you are looking for a software specifically dedicated to this there are better options out there, for example [here](http://www.geo.cornell.edu/geology/faculty/RWA/programs/stereonet.html), [here](http://www.frederickvollmer.com/orient/), or [here](http://www.igc.usp.br/index.php?id=openstereo). In any case, if you decide to use it or want to access the source code out of curiosity, do so at your own risk and responsibility downloading the script [here](https://github.com/marcoalopez/JASPE/releases). You can also fork the project on GitHub since it is free and open-source.
+**JASPE** stands for **J**ust **A**nother **S**tereoplot **P**ython **E**nvironment. This is a pet project that I develop at my own pace and according to my needs and preferences. The script is therefore not primarily intended for general use but my own. You should not expect updates, new features, or bug fixes in reasonable times. Nor can I assure you that the project will be abandoned for a large period of time. My main goal with this is to include stereographic/equal-area projections in my Python work flow while interacting with standard Python scientific libraries. If you are looking for a software specifically dedicated to this task there are better options out there, for example [here](http://www.geo.cornell.edu/geology/faculty/RWA/programs/stereonet.html), [here](http://www.frederickvollmer.com/orient/), or [here](http://www.igc.usp.br/index.php?id=openstereo). In any case, if you decide to use it or want to access the source code out of curiosity, do so at your own risk and responsibility downloading the script [here](https://github.com/marcoalopez/JASPE/releases). You can also fork the project on GitHub since it is free and open-source.
 
-So far, the script only performs very basic tasks. One function tweaks the default features of matplotlib plots (i.e. the  standard Python plotting library) to generate single or multiple stereoplots, another is for importing tabular-like data, and the rest to transform between different reference frames; from spherical to equal area or equal angle stereographic coordinates or from spherical to cartesian coordinates and vice versa.
+So far, the script only performs very basic tasks. One function tweaks the default features of matplotlib plots (i.e. the  standard Python plotting library) to generate single or multiple stereoplots, another is for importing tabular-like data, and the rest to transform between different reference frames; from spherical to equal-area or stereographic (equal-angle) coordinates or from spherical to cartesian coordinates and vice versa.
+
+>
 
 ## Quick examples
 
@@ -34,7 +36,7 @@ plot_data(azimuths, dips, ax1)
 
 # plot linear data from a txt file in the second stereo (ax2)
 
-## first, import tabular-like data from text files. The function will ask you for
+## import tabular-like data from text files. The function will ask you for
 ## the location of the file through a file selection dialog
 dataset = import_data()  
 
@@ -53,13 +55,13 @@ Trend  Plunge Type
 111  355.0    24.0    C
 
 ## This time we will use matplotlib syntax instead of using the plot_data funtion
-## (this is the way to go if you want to control the figure aesthetics)
+## (this is the way to go if you want to control all the figure aesthetics)
 
 ### Transform from spherical coordinates to equal-area coordinates
 azimuths, dips = sph_to_eq_area(dataset['Trend'], dataset['Plunge'])
 
 ### Second, plot using matplotlib syntax
 ax2.plot(azimuths, dips, 'h', color='C3', markersize=9, label='Kamb (1959) data')
-ax2.legend()
+ax2.legend()  # add legend
 ```
 ![](https://raw.githubusercontent.com/marcoalopez/JASPE/master/figs/example.png)
