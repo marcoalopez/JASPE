@@ -4,7 +4,7 @@
 
 So far, the script only performs very basic tasks. One function tweaks the default features of matplotlib plots (i.e. the  standard Python plotting library) to generate single or multiple stereoplots, another is for importing tabular-like data, and the rest to transform between different reference frames; from spherical to equal-area or stereographic (equal-angle) coordinates or from spherical to cartesian coordinates and vice versa.
 
->  <sup>1</sup>As stated above, the JASPE script is intended to produce both stereographic (Wulff) and equal-area (a.k.a. Schmidt net or Lambert azimuthal) projections. I chose the word *stereoplot* because is very familiar in geosciences and used by geoscientists to refer, somewhat loosely, to both projections. Since strictly speaking the equal-area projection is not a type of stereographic projection or, feel free to change the word a **Stereoplot** to **Schmidt-net**, the acronym will remain the same.
+>  <sup>1</sup>*As stated above, the JASPE script is intended to produce both stereographic (Wulff) and equal-area (a.k.a. Schmidt net or Lambert azimuthal) projections. I chose the word **stereoplot** because is very familiar in geosciences and used by geoscientists to refer, somewhat loosely, to both projections. Since strictly speaking the equal-area projection is not a type of stereographic projection, feel free to exchange the word **Stereoplot** for **Schmidt-net** if you are picky, the acronym will remain the same.*
 
 ## Quick examples
 
@@ -12,7 +12,7 @@ So far, the script only performs very basic tasks. One function tweaks the defau
 # Create a simple figure
 fig, ax = plt.subplots()
 
-# set the ...
+# set the plot
 set_stereo(ax)  # set the stereo
 fig.tight_layout()  # assure a tight layout
 
@@ -26,7 +26,7 @@ plot_data(180, 45, ax, form='angle')  # plot in equal-angle projection
 # Create a figure with two stereos using matplotlib [oo] syntax
 fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, sharey=True)
 
-# set the axes of the figures to...
+# set the plots
 set_stereo(ax1)
 set_stereo(ax2)
 fig.tight_layout()
