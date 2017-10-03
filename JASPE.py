@@ -43,7 +43,6 @@ import os
 # Example
 # fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, sharey=True)
 # fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True)
-# fig.tight_layout()
 
 
 def set_stereo(ax):
