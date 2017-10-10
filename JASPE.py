@@ -242,6 +242,76 @@ def cart_to_sph(north_cos, east_cos, down_cos):
     return azimuth, dip
 
 
+def mean_vector(trend, dip, conf=95):
+    """Estimate the mean vector for a given set of vectors.
+
+    Parameters
+    ----------
+    trend:
+        TODO
+    plunge:
+        TODO
+    conf: integer or float between 0 and 100
+        the cone level of confidence (default 95 %)
+
+    Returns
+    -------
+    TODO
+    """
+
+    n = len(trend)
+
+    # sum the different cosine directions
+    Nc, Ec, dc = sph_to_cart(trend, dip)
+    Nc_sum = np.sum(Nc)
+    Ec_sum = np.sum(Ec)
+    dc_sum = np.sum(dc)
+
+    # Estimate the resultant vector (R) and the vector normalized to n (rave)
+    R = np.sqrt(Nc_sum**2 + Ec_sum**2 + dc_sum**2)
+    rave = R / n
+
+    # check significance
+    if rave < 0.1:
+        print('Mean vector is insignificant')
+
+    else:
+        Nc_sum = Nc_sum / R
+        Ec_sum = Ec_sum / R
+        dc_sum = dc_sum / R
+
+    # convert mean vector to lower hemisphere
+    if dc_sum < 0.0:
+        Nc_sum = -Nc_sum
+        Ec_sum = -Ec_sum
+        dc_sum = -dc_sum
+
+    # convert direction cosines to spherical (trend and dip)
+    trend, dip = cart_to_sph(Nc_sum, Ec_sum, dc_sum)
+
+    # Fisher statistics (Fisher et al., 1987)
+    # Estimate concentration factor
+    if R < n:
+        if n < 16:
+            afact = 1.0 - (1.0 / n)
+            conc = (n / (n - R)) * afact**2
+        else:
+            conc = (n - 1.0) / (n - R)
+
+    # estimate uncertainty cones
+    if rave >= 0.65 and rave < 1.0:
+        bfact = 1.0 / (n - 1.0)
+        afact = 1.0 / (1.0 - conf)
+        d = np.arccos(1.0 - ((n - R) / R) * (afact**(bfact - 1.0)))
+
+    print('Mean vector =', trend, '/', dip, 'trend/dip')
+    print('Fisher statistics:')
+    print('concentration factor =', conc)
+    print('uncertainty cone =', d, r'at {n} % level of confidence' .format(n=conf))
+
+    return trend, dip
+
+
 def zero_to_pi(azimuth):
     """Constrains azimuth between 0 and 2*pi radians
 
