@@ -4,7 +4,7 @@
 
 So far, the script only performs very basic tasks. One function tweaks the default features of matplotlib plots (i.e. the  standard Python plotting library) to generate single or multiple stereoplots, another is for importing tabular-like data, and the rest to transform between different reference frames; from spherical to equal-area or stereographic (equal-angle) coordinates or from spherical to cartesian coordinates and vice versa.
 
->  <sup>1</sup>*As stated above, the JASPE script is intended to produce both stereographic (Wulff) and equal-area (a.k.a. Schmidt net or Lambert azimuthal) projections. I chose the word **stereoplot** because is very familiar in geosciences and used by geoscientists to refer, somewhat loosely, to both projections. Strictly speaking, the equal-area projection is not a stereographic projection. So if you are picky, feel free to exchange the word **Stereoplot** for **Schmidt-net** and the acronym JASPE will remain the same.*
+>  <sup>1</sup>*As stated above, the JASPE script is intended to produce both stereographic (Wulff) and equal-area (a.k.a. Schmidt net or Lambert azimuthal) projections. I chose the word **stereoplot** because is very familiar in geosciences and used by geoscientists to refer, somewhat loosely, to both projections. Strictly speaking, the equal-area projection is not a stereographic projection. So if you feel picky, feel free to exchange the word **Stereoplot** for **Schmidt-net** and the acronym JASPE will remain the same.*
 
 ## Quick examples
 
