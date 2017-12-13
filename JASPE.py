@@ -22,7 +22,7 @@
 #    Covered Software is authorized under this License except under this       #
 #    disclaimer.                                                               #
 #                                                                              #
-#    Version alpha  0.1.1                                                      #
+#    Version alpha  0.2                                                        #
 #    For details see: https://github.com/marcoalopez/JASPE                     #
 #    download at https://github.com/marcoalopez/JASPE/releases                 #
 #                                                                              #
@@ -41,11 +41,11 @@ import pandas as pd
 import os
 
 # Example
-# fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, sharey=True)
-# fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True)
+# fig, (ax1, ax2) = stereoplot(number=2, nrows=1, ncols=2)
+# fig, (ax1, ax2, ax3) = stereoplot(number=3, nrows=3, ncols=1)
 
 
-def stereo(number=1, nrows=1, ncols=1):
+def stereoplot(number=1, nrows=1, ncols=1):
     """Automatically generate a defined number of stereoplots (between 1 and 5)
     using the matplotlib library
 
@@ -53,10 +53,10 @@ def stereo(number=1, nrows=1, ncols=1):
     ----------
     form: integer between 1 and 5
         the number of stereos, up to 5
-    
+
     nrows: integer
         the number of rows of the subplot grid
-    
+
     ncols: integer
        the number of columns of the subplot grid
 
@@ -73,10 +73,6 @@ def stereo(number=1, nrows=1, ncols=1):
     TODO
     """
 
-    if number > 5:
-        print('This method only allows up to 5 stereos at once')
-        return None
-
     if nrows * ncols != number:
         print('nrows times ncols must be equal to the number of stereos!')
         return None
@@ -88,37 +84,19 @@ def stereo(number=1, nrows=1, ncols=1):
 
         return fig, ax
 
-    elif number == 2:
-        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
-        for item in ax:
+    else:
+        if nrows == 1:
+            fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
+        elif ncols == 1:
+            fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharex=True)
+        else:  # not yet implemented
+            fig, ax = plt.subplots(nrows=nrows, ncols=ncols)
+
+        for item in fig.axes:
             set_stereo(item)
         fig.tight_layout()
 
-        return fig, ax
-
-    elif number == 3:
-        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
-        for item in ax:
-            set_stereo(item)
-        fig.tight_layout()
-
-        return fig, ax
-
-    elif number == 4:
-        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
-        for item in ax:
-            set_stereo(item)
-        fig.tight_layout()
-
-        return fig, ax
-
-    elif number == 5:
-        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
-        for item in ax:
-            set_stereo(item)
-        fig.tight_layout()
-
-        return fig, ax
+        return fig, fig.axes
 
 
 def set_stereo(ax):
