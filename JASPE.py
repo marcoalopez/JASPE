@@ -45,6 +45,82 @@ import os
 # fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True)
 
 
+def stereo(number=1, nrows=1, ncols=1):
+    """Automatically generate a defined number of stereoplots (between 1 and 5)
+    using the matplotlib library
+
+    Parameters
+    ----------
+    form: integer between 1 and 5
+        the number of stereos, up to 5
+    
+    nrows: integer
+        the number of rows of the subplot grid
+    
+    ncols: integer
+       the number of columns of the subplot grid
+
+    Assumptions
+    -----------
+    - nrows * ncols must be equal to the number of stereos
+
+    Call functions
+    --------------
+    set_stereo
+
+    Return
+    ------
+    TODO
+    """
+
+    if number > 5:
+        print('This method only allows up to 5 stereos at once')
+        return None
+
+    if nrows * ncols != number:
+        print('nrows times ncols must be equal to the number of stereos!')
+        return None
+
+    if number == 1:
+        fig, ax = plt.subplots()
+        set_stereo(ax)
+        fig.tight_layout()
+
+        return fig, ax
+
+    elif number == 2:
+        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
+        for item in ax:
+            set_stereo(item)
+        fig.tight_layout()
+
+        return fig, ax
+
+    elif number == 3:
+        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
+        for item in ax:
+            set_stereo(item)
+        fig.tight_layout()
+
+        return fig, ax
+
+    elif number == 4:
+        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
+        for item in ax:
+            set_stereo(item)
+        fig.tight_layout()
+
+        return fig, ax
+
+    elif number == 5:
+        fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
+        for item in ax:
+            set_stereo(item)
+        fig.tight_layout()
+
+        return fig, ax
+
+
 def set_stereo(ax):
     """Tweak the matplotlib figure axes to plot a stereographic projection of
     unit radius.
@@ -98,6 +174,11 @@ def plot_data(trend, dip, ax, form='area'):
     --------
     >>> plot_data(180, 45, ax)  # equal-area projection (by default)
     >>> plot_data(93, 38, ax, form='angle')  # equal-angle projection
+
+    Call functions
+    --------------
+    - sph_to_eq_area
+    - sph_to_eq_angle
     """
 
     if form == 'area':
@@ -211,6 +292,10 @@ def cart_to_sph(north_cos, east_cos, down_cos):
     down_cos: an integer, float, or array-like
         down direction cosine
 
+    Call function
+    -------------
+    - zero_to_pi
+
     Returns
     -------
     a numpy array with spherical coordinates (azimuth, dip)
@@ -254,9 +339,14 @@ def mean_vector(trend, dip, conf=95):
     conf: integer or float between 0 and 100
         the cone level of confidence (default 95 %)
 
+    Call functions
+    --------------
+    - sph_to_cart
+    - cart_to_sph
+
     Returns
     -------
-    TODO
+    mean trend and dip
     """
 
     n = len(trend)
@@ -331,8 +421,7 @@ def zero_to_pi(azimuth):
 
 
 def import_data(file_path='auto', delimiter=None, skiprows=None):
-    """ Extract the data corresponding to the areas of grain profiles from stored
-    tabular-like data.
+    """ Extract the data from tabular-like files
 
     Parameters
     ----------
