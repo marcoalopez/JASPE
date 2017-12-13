@@ -40,29 +40,23 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-# Example
-# fig, (ax1, ax2) = stereoplot(number=2, nrows=1, ncols=2)
-# fig, (ax1, ax2, ax3) = stereoplot(number=3, nrows=3, ncols=1)
+# Examples
+# fig, ax = stereoplot()
+# fig, (ax1, ax2) = stereoplot(nrows=1, ncols=2)
+# fig, (ax1, ax2, ax3, ax4) = stereoplot(nrows=2, ncols=2)
 
 
-def stereoplot(number=1, nrows=1, ncols=1):
+def stereoplot(nrows=1, ncols=1):
     """Automatically generate a defined number of stereoplots (between 1 and 5)
     using the matplotlib library
 
     Parameters
     ----------
-    form: integer between 1 and 5
-        the number of stereos, up to 5
-
     nrows: integer
         the number of rows of the subplot grid
 
     ncols: integer
-       the number of columns of the subplot grid
-
-    Assumptions
-    -----------
-    - nrows * ncols must be equal to the number of stereos
+        the number of columns of the subplot grid
 
     Call functions
     --------------
@@ -72,12 +66,9 @@ def stereoplot(number=1, nrows=1, ncols=1):
     ------
     TODO
     """
+    num_plots = nrows * ncols
 
-    if nrows * ncols != number:
-        print('nrows times ncols must be equal to the number of stereos!')
-        return None
-
-    if number == 1:
+    if num_plots == 1:
         fig, ax = plt.subplots()
         set_stereo(ax)
         fig.tight_layout()
@@ -89,7 +80,7 @@ def stereoplot(number=1, nrows=1, ncols=1):
             fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharey=True)
         elif ncols == 1:
             fig, ax = plt.subplots(nrows=nrows, ncols=ncols, sharex=True)
-        else:  # not yet implemented
+        else:
             fig, ax = plt.subplots(nrows=nrows, ncols=ncols)
 
         for item in fig.axes:

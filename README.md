@@ -9,12 +9,8 @@ So far, the script only performs very basic tasks. One function tweaks the defau
 ## Quick examples
 
 ```python
-# Create a simple figure
-fig, ax = plt.subplots()
-
-# set the plot
-set_stereo(ax)  # set the stereo
-fig.tight_layout()  # assure a tight layout
+# Create a simple stereoplot
+fig, ax = stereoplot()
 
 # Plot some data using the function plot_data
 plot_data(180, 45, ax)  # by default this is an equal-area projection
@@ -23,13 +19,8 @@ plot_data(180, 45, ax, form='angle')  # plot in equal-angle projection
 ![](https://raw.githubusercontent.com/marcoalopez/JASPE/master/figs/one_plot.png)
 
 ```python
-# Create a figure with two stereos using matplotlib [oo] syntax
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, sharey=True)
-
-# set the plots
-set_stereo(ax1)
-set_stereo(ax2)
-fig.tight_layout()
+# Create a figure with two stereos (1 row * 2 columns)
+fig, (ax1, ax2) = stereoplot(nrows=1, ncols=2)
 
 # plot linear data in the first stereo (ax1)
 azimuths = [0, 45, 90, 135, 180, 225, 270, 315, 360]
@@ -37,7 +28,6 @@ dips = [0, 10, 20, 30, 40, 50, 70, 80, 90]
 plot_data(azimuths, dips, ax1)
 
 # plot linear data from a txt file in the second stereo (ax2)
-
 ## import tabular-like data from text files. The function will ask you for
 ## the location of the file through a file selection dialog
 dataset = import_data()  
