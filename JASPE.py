@@ -22,7 +22,7 @@
 #    Covered Software is authorized under this License except under this       #
 #    disclaimer.                                                               #
 #                                                                              #
-#    Version alpha  0.2                                                        #
+#    Version alpha  0.3                                                        #
 #    For details see: https://github.com/marcoalopez/JASPE                     #
 #    download at https://github.com/marcoalopez/JASPE/releases                 #
 #                                                                              #
@@ -47,8 +47,8 @@ import os
 
 
 def stereoplot(nrows=1, ncols=1):
-    """Automatically generate a defined number of stereoplots (between 1 and 5)
-    using the matplotlib library
+    """Automatically generate a defined number of stereoplots using
+    the matplotlib library
 
     Parameters
     ----------
@@ -121,28 +121,29 @@ def set_stereo(ax):
     return None
 
 
-def plot_data(trend, dip, ax, form='area'):
+def plot_data(axe, trend, dip, proj='area', **kwargs):
     """Plot the coordinates of a line in an equal area or equal
     angle stereonet of unit radius.
 
     Parameters
-    ----------
+    ----------    
+    axe: matplotlib object
+        the matplotlib axe
+
     trend: integer, float or array_like with values between 0 and 360
         line direction (azimuth; 0 - 360 degrees)
 
     dip: integer, float or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
 
-    ax: matplotlib object
-        the matplotlib axe
-
-    form: string
+    proj: string
         type of plot, either equal 'area' or equal 'angle'. Equal area as default.
 
     Examples
     --------
-    >>> plot_data(180, 45, ax)  # equal-area projection (by default)
-    >>> plot_data(93, 38, ax, form='angle')  # equal-angle projection
+    >>> plot_data(ax, 180, 45)  # equal-area projection (by default)
+    >>> plot_data(ax, 93, 38, proj='angle')  # equal-angle projection
+    >>> plot_data(ax, 270, 45, 'area', marker='h', color='C4', markersize=12)
 
     Call functions
     --------------
@@ -150,16 +151,16 @@ def plot_data(trend, dip, ax, form='area'):
     - sph_to_eq_angle
     """
 
-    if form == 'area':
+    if proj == 'area':
         x, y = sph_to_eq_area(trend, dip)
-        return ax.plot(x, y, 'o')
+        return axe.plot(x, y, 'o', **kwargs)
 
-    elif form == 'angle':
-        x, y = sph_to_eq_angle(trend, dip)
-        return ax.plot(x, y, 'o')
+    elif proj == 'angle':
+        x, y = sph_to_eq_angle(trend, dip, **kwargs)
+        return axe.plot(x, y, 'o')
 
     else:
-        print("Wrong form! please choose between 'area' or 'angle'")
+        print("Wrong projection! please choose between 'area' or 'angle'")
         return None
 
 
@@ -169,10 +170,10 @@ def sph_to_eq_area(trend, dip):
 
     Parameters
     ----------
-    trend: an integer, float or array_like with values between 0 and 360
+    trend: integer, float or array_like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
-    dip: an integer, float or array_like with values between 0 and 90
+    dip: integer, float or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
@@ -196,10 +197,10 @@ def sph_to_eq_angle(trend, dip):
 
     Parameters
     ----------
-    trend: an integer, float or array_like with values between 0 and 360
+    trend: integer, float or array_like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
-    dip: an integer, float or array_like with values between 0 and 90
+    dip: integer, float or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
@@ -223,10 +224,10 @@ def sph_to_cart(trend, dip):
 
     Parameters
     ----------
-    trend: an integer, float, or array-like with values between 0 and 360
+    trend: integer, float, or array-like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
-    dip: an integer, float or array_like with values between 0 and 90
+    dip: integer, float or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
@@ -252,13 +253,13 @@ def cart_to_sph(north_cos, east_cos, down_cos):
 
     Parameters
     ----------
-    north_cos: an integer, float, or array-like
+    north_cos: integer, float, or array-like
         north direction cosine
 
-    east_cos: an integer, float, or array-like
+    east_cos: integer, float, or array-like
         east direction cosine
 
-    down_cos: an integer, float, or array-like
+    down_cos: integer, float, or array-like
         down direction cosine
 
     Call function
@@ -326,9 +327,9 @@ def mean_vector(trend, dip, conf=95):
     Ec_sum = np.sum(Ec)
     dc_sum = np.sum(dc)
 
-    # Estimate the resultant vector (R) and the vector normalized to n (rave)
+    # Estimate the resultant vector (R)
     R = np.sqrt(Nc_sum**2 + Ec_sum**2 + dc_sum**2)
-    rave = R / n
+    rave = R / n  # normalize to n
 
     # check significance
     if rave < 0.1:
