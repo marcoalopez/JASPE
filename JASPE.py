@@ -121,47 +121,58 @@ def set_stereo(ax):
     return None
 
 
-def plot_data(axe, trend, dip, proj='area', **kwargs):
-    """Plot the coordinates of a line in an equal area or equal
-    angle stereonet of unit radius.
+def plot_eq_area(axe, trend, dip, **kwargs):
+    """Plot the coordinates of a line in an equal area projection
+    of unit radius.
 
     Parameters
-    ----------    
-    axe: matplotlib object
-        the matplotlib axe
-
+    ----------
     trend: integer, float or array_like with values between 0 and 360
         line direction (azimuth; 0 - 360 degrees)
 
     dip: integer, float or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
 
-    proj: string
-        type of plot, either equal 'area' or equal 'angle'. Equal area as default.
+    Examples
+    --------
+    >>> plot_eq_area(ax, 180, 45)  # equal-area projection (by default)
+    >>> plot_eq_area(ax, 270, 45, 'area', marker='h', color='C4', markersize=12)
+
+    Call function(s)
+    --------------
+    - sph_to_eq_area
+    """
+
+    x, y = sph_to_eq_area(trend, dip)
+
+    return axe.plot(x, y, 'o', **kwargs)
+
+
+def plot_eq_angle(axe, trend, dip, **kwargs):
+    """Plot the coordinates of a line in an equal angle projection
+    of unit radius.
+
+    Parameters
+    ----------
+    trend: integer, float or array_like with values between 0 and 360
+        line direction (azimuth; 0 - 360 degrees)
+
+    dip: integer, float or array_like with values between 0 and 90
+        plunge or dip of line (0 - 90 degrees)
 
     Examples
     --------
-    >>> plot_data(ax, 180, 45)  # equal-area projection (by default)
-    >>> plot_data(ax, 93, 38, proj='angle')  # equal-angle projection
-    >>> plot_data(ax, 270, 45, 'area', marker='h', color='C4', markersize=12)
+    >>> plot_eq_angle(ax, 180, 45)  # equal-area projection (by default)
+    >>> plot_eq_angle(ax, 270, 45, 'area', marker='h', color='C4', markersize=12)
 
-    Call functions
+    Call function(s)
     --------------
-    - sph_to_eq_area
     - sph_to_eq_angle
     """
 
-    if proj == 'area':
-        x, y = sph_to_eq_area(trend, dip)
-        return axe.plot(x, y, 'o', **kwargs)
+    x, y = sph_to_eq_angle(trend, dip)
 
-    elif proj == 'angle':
-        x, y = sph_to_eq_angle(trend, dip, **kwargs)
-        return axe.plot(x, y, 'o')
-
-    else:
-        print("Wrong projection! please choose between 'area' or 'angle'")
-        return None
+    return axe.plot(x, y, 'o', **kwargs)
 
 
 def sph_to_eq_area(trend, dip):
