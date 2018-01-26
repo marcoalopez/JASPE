@@ -57,6 +57,7 @@ Trend  Plunge Type
 110  352.0    26.0    C
 111  355.0    24.0    C
 
+fig, ax = stereoplot()  # create plot
 plot_eq_area(ax, dataset['Trend'], dataset['Plunge'], marker='o', markersize=8, label='Kamb (1959) data')
 ax.legend()  # add legend
 ```
