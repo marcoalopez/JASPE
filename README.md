@@ -10,9 +10,12 @@ So far, the script only performs basic tasks. One function tweaks the default fe
 
 The script requires Python 3.5 or higher and the scientific libraries Numpy (1.11 or higher), Matplotlib (2.0 or higher) and Pandas. For this, we recommend installing the [Continuum Anaconda](https://store.continuum.io/cshop/anaconda/) or the [Enthought Canopy](https://www.enthought.com/products/canopy/) and use the Spyder or Canopy IDEs respectively.
 
-## Quick examples (v0.3 or higher)
+## Quick examples
+
+The script operates through the command line. The example below **requires v0.3 or higher for correct operation**. 
 
 ### Plot data
+
 ```python
 # Create a simple stereoplot
 fig, ax = stereoplot()
