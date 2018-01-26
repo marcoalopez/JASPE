@@ -2,7 +2,7 @@
 # ============================================================================ #
 #                                                                              #
 #    JASPE script                                                              #
-#    JASPE stands for Just Another Stereoplot Python Environment               #
+#    JASPE stands for Just Another Stereoplot (in a) Python Environment        #
 #                                                                              #
 #    Copyright (c) 2017-present   Marco A. Lopez-Sanchez                       #
 #                                                                              #
