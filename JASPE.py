@@ -2,7 +2,7 @@
 # ============================================================================ #
 #                                                                              #
 #    JASPE script                                                              #
-#    JASPE stands for Just Another Stereoplot (in a) Python Environment        #
+#    JASPE stands for Just Another Stereoplot in a Python Environment          #
 #                                                                              #
 #    Copyright (c) 2017-present   Marco A. Lopez-Sanchez                       #
 #                                                                              #
@@ -52,10 +52,10 @@ def stereoplot(nrows=1, ncols=1):
 
     Parameters
     ----------
-    nrows: integer
+    nrows : integer
         the number of rows of the subplot grid
 
-    ncols: integer
+    ncols : integer
         the number of columns of the subplot grid
 
     Call functions
@@ -96,7 +96,7 @@ def set_stereo(ax):
 
     Parameters
     ----------
-    ax: a matplotlib object
+    ax : a matplotlib object
         the axes
     """
 
@@ -127,11 +127,15 @@ def plot_eq_area(axe, trend, dip, **kwargs):
 
     Parameters
     ----------
-    trend: integer, float or array_like with values between 0 and 360
+    trend : scalar or array_like with values between 0 and 360
         line direction (azimuth; 0 - 360 degrees)
 
-    dip: integer, float or array_like with values between 0 and 90
+    dip : scalar or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
+
+    kwargs : `~matplotlib.collections.Collection` properties
+        Eg. alpha, edgecolor(ec), facecolor(fc), linewidth(lw), linestyle(ls),
+        norm, cmap, transform, etc.
 
     Examples
     --------
@@ -154,11 +158,15 @@ def plot_eq_angle(axe, trend, dip, **kwargs):
 
     Parameters
     ----------
-    trend: integer, float or array_like with values between 0 and 360
+    trend : scalar or array_like with values between 0 and 360
         line direction (azimuth; 0 - 360 degrees)
 
-    dip: integer, float or array_like with values between 0 and 90
+    dip : scalar or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
+
+    kwargs : `~matplotlib.collections.Collection` properties
+        Eg. alpha, edgecolor(ec), facecolor(fc), linewidth(lw), linestyle(ls),
+        norm, cmap, transform, etc.
 
     Examples
     --------
@@ -181,15 +189,15 @@ def sph_to_eq_area(trend, dip):
 
     Parameters
     ----------
-    trend: integer, float or array_like with values between 0 and 360
+    trend : scalar or array_like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
-    dip: integer, float or array_like with values between 0 and 90
+    dip : scalar or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
     -------
-    a float or numpy arrays with the stereographic equal-area coordinates (x, y)
+    a float or numpy array with the stereographic equal-area coordinates (x, y)
     """
 
     # convert degrees to radians
@@ -208,10 +216,10 @@ def sph_to_eq_angle(trend, dip):
 
     Parameters
     ----------
-    trend: integer, float or array_like with values between 0 and 360
+    trend : scalar or array_like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
-    dip: integer, float or array_like with values between 0 and 90
+    dip : scalar or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
@@ -235,10 +243,10 @@ def sph_to_cart(trend, dip):
 
     Parameters
     ----------
-    trend: integer, float, or array-like with values between 0 and 360
+    trend : scalar or array-like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
-    dip: integer, float or array_like with values between 0 and 90
+    dip : scalar or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
@@ -264,13 +272,13 @@ def cart_to_sph(north_cos, east_cos, down_cos):
 
     Parameters
     ----------
-    north_cos: integer, float, or array-like
+    north_cos : integer, float, or array-like
         north direction cosine
 
-    east_cos: integer, float, or array-like
+    east_cos : integer, float, or array-like
         east direction cosine
 
-    down_cos: integer, float, or array-like
+    down_cos : integer, float, or array-like
         down direction cosine
 
     Call function
@@ -313,11 +321,11 @@ def mean_vector(trend, dip, conf=95):
 
     Parameters
     ----------
-    trend:
+    trend :
         TODO
-    plunge:
+    plunge :
         TODO
-    conf: integer or float between 0 and 100
+    conf : integer or float between 0 and 100
         the cone level of confidence (default 95 %)
 
     Call functions
@@ -388,7 +396,7 @@ def zero_to_pi(azimuth):
 
     Parameter
     ---------
-    azimuth: float
+    azimuth : float
         the azimuth in radians
     """
 
@@ -406,17 +414,17 @@ def import_data(file_path='auto', delimiter=None, skiprows=None):
 
     Parameters
     ----------
-    file_path: string
+    file_path : string
         The file location in the OS in quotes
         e.g: 'C:/...yourFileLocation.../nameOfTheFile.csv'
         If 'auto' (the default) the function will ask you for the location of
         the file through a file selection dialog.
 
-    delimiter: string or None (default)
+    delimiter : string, default: None
         Delimiter to use. The pandas method try to automatically detect the
         separator, but it can be defined by the user.
 
-    skiprows: integer, list-like or callable. Default None
+    skiprows : integer, list-like or callable. Default: None
         Line numbers to skip (0-indexed) or number of lines to skip (int) at the
         start of the text file.
 
@@ -463,10 +471,10 @@ def plot_projection(ax, form='area'):
 
     Parameters
     ----------
-    ax:
+    ax :
         the Matplotlib axe
 
-    form: string
+    form : string
         'area' for equal-area, 'angle' for equal-angle
     """
 
