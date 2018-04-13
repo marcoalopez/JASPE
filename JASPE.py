@@ -43,7 +43,7 @@ import os
 # Examples
 # fig, ax = stereoplot()
 # fig, (ax1, ax2) = stereoplot(nrows=1, ncols=2)
-# fig, (ax1, ax2, ax3, ax4) = stereoplot(nrows=2, ncols=2)
+# fig, ((ax1, ax2), (ax3, ax4)) = stereoplot(nrows=2, ncols=2)
 
 
 def stereoplot(nrows=1, ncols=1):
@@ -52,10 +52,10 @@ def stereoplot(nrows=1, ncols=1):
 
     Parameters
     ----------
-    nrows : integer
+    nrows : positive integer
         the number of rows of the subplot grid
 
-    ncols : integer
+    ncols : positive integer
         the number of columns of the subplot grid
 
     Call functions
@@ -104,11 +104,11 @@ def set_stereo(ax):
     ax.tick_params(
         axis='both',
         which='both',
-        bottom='off',
-        top='off',
-        left='off',
-        labelbottom='off',
-        labelleft='off')
+        bottom=False,
+        top=False,
+        left=False,
+        labelbottom=False,
+        labelleft=False)
 
     # draw the contour and the centre of the circle
     ax.plot(0, 0, 'k+')
@@ -139,8 +139,8 @@ def plot_eq_area(axe, trend, dip, **kwargs):
 
     Examples
     --------
-    >>> plot_eq_area(ax, 180, 45)  # equal-area projection (by default)
-    >>> plot_eq_area(ax, 270, 45, 'area', marker='h', color='C4', markersize=12)
+    >>> plot_eq_area(ax, 180, 45)
+    >>> plot_eq_area(ax, 270, 45, marker='h', color='green', markersize=12)
 
     Call function(s)
     --------------
@@ -170,8 +170,8 @@ def plot_eq_angle(axe, trend, dip, **kwargs):
 
     Examples
     --------
-    >>> plot_eq_angle(ax, 180, 45)  # equal-area projection (by default)
-    >>> plot_eq_angle(ax, 270, 45, 'area', marker='h', color='C4', markersize=12)
+    >>> plot_eq_angle(ax, 180, 45)
+    >>> plot_eq_angle(ax, 270, 45, marker='h', color='blue', markersize=12)
 
     Call function(s)
     --------------
@@ -237,7 +237,7 @@ def sph_to_eq_angle(trend, dip):
     return x, y
 
 
-def sph_to_cart(trend, dip):
+def sph_to_cart(trend, dip, plot3D=False):
     """Convert from spherical (azimuth, dip) to cartesian coordinates using...TODO.
     It returns the north, east, and down direction cosines of a line.
 
@@ -262,6 +262,12 @@ def sph_to_cart(trend, dip):
     east_cos = np.cos(dip) * np.sin(trend)
     north_cos = np.cos(dip) * np.cos(trend)
     down_cos = np.sin(dip)
+
+    if plot3D is True:
+        from mpl_toolkits.mplot3d import Axes3D
+        figura = plt.figure()
+        ax3d = figura.add_subplot(111, projection='3d')
+        ax3d.scatter(xs=north_cos, ys=east_cos, zs=down_cos, zdir='z')
 
     return north_cos, east_cos, down_cos
 
@@ -321,10 +327,12 @@ def mean_vector(trend, dip, conf=95):
 
     Parameters
     ----------
-    trend :
-        TODO
-    plunge :
-        TODO
+    trend : scalar or array-like with values between 0 and 360
+        line direction (azimuth) in spherical coordinates (degrees)
+
+    plunge : scalar or array_like with values between 0 and 90
+        plunge or dip of line in spherical coordinates (degrees)
+
     conf : integer or float between 0 and 100
         the cone level of confidence (default 95 %)
 
@@ -365,10 +373,10 @@ def mean_vector(trend, dip, conf=95):
         Ec_sum = -Ec_sum
         dc_sum = -dc_sum
 
-    # convert direction cosines to spherical (trend and dip)
+    # convert direction cosines to spherical coordinates (trend and dip)
     trend, dip = cart_to_sph(Nc_sum, Ec_sum, dc_sum)
 
-    # Fisher statistics (Fisher et al., 1987)
+    # Fisher statistics based on Fisher et al. (1987)
     # Estimate concentration factor
     if R < n:
         if n < 16:
