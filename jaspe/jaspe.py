@@ -45,6 +45,8 @@ import os
 # fig, (ax1, ax2) = stereoplot(nrows=1, ncols=2)
 # fig, ((ax1, ax2), (ax3, ax4)) = stereoplot(nrows=2, ncols=2)
 
+ax = None
+
 
 def stereoplot(nrows=1, ncols=1):
     """Automatically generate a defined number of stereoplots using
@@ -85,6 +87,7 @@ def stereoplot(nrows=1, ncols=1):
 
         for item in fig.axes:
             set_stereo(item)
+
         fig.tight_layout()
 
         return fig, fig.axes
@@ -121,17 +124,21 @@ def set_stereo(ax):
     return None
 
 
-def plot_eq_area(axe, trend, dip, **kwargs):
+def plot_eq_area(azimuth, dip, axe=ax, **kwargs):
     """Plot the coordinates of a line in an equal area projection
     of unit radius.
 
     Parameters
     ----------
-    trend : scalar or array_like with values between 0 and 360
-        line direction (azimuth; 0 - 360 degrees)
+    azimuth : scalar or array_like with values between 0 and 360
+        angle between the north vector and the line on the horizontal
+        plane in spherical coordinates (0 - 360 degrees)
 
     dip : scalar or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
+
+    axe : object, ax by default
+        the figure axe
 
     kwargs : `~matplotlib.collections.Collection` properties
         Eg. alpha, edgecolor(ec), facecolor(fc), linewidth(lw), linestyle(ls),
@@ -139,30 +146,34 @@ def plot_eq_area(axe, trend, dip, **kwargs):
 
     Examples
     --------
-    >>> plot_eq_area(ax, 180, 45)
-    >>> plot_eq_area(ax, 270, 45, marker='h', color='green', markersize=12)
+    >>> plot_eq_area(180, 45)
+    >>> plot_eq_area(270, 45, marker='h', color='green', markersize=12)
 
     Call function(s)
     --------------
     - sph_to_eq_area
     """
 
-    x, y = sph_to_eq_area(trend, dip)
+    x, y = sph_to_eq_area(azimuth, dip)
 
     return axe.plot(x, y, 'o', **kwargs)
 
 
-def plot_eq_angle(axe, trend, dip, **kwargs):
+def plot_eq_angle(azimuth, dip, axe=ax, **kwargs):
     """Plot the coordinates of a line in an equal angle projection
     of unit radius.
 
     Parameters
     ----------
-    trend : scalar or array_like with values between 0 and 360
-        line direction (azimuth; 0 - 360 degrees)
+    azimuth : scalar or array_like with values between 0 and 360
+        angle between the north vector and the line on the horizontal
+        plane in spherical coordinates (0 - 360 degrees)
 
     dip : scalar or array_like with values between 0 and 90
         plunge or dip of line (0 - 90 degrees)
+
+    axe : object, ax by default
+        the figure axe
 
     kwargs : `~matplotlib.collections.Collection` properties
         Eg. alpha, edgecolor(ec), facecolor(fc), linewidth(lw), linestyle(ls),
@@ -170,27 +181,28 @@ def plot_eq_angle(axe, trend, dip, **kwargs):
 
     Examples
     --------
-    >>> plot_eq_angle(ax, 180, 45)
-    >>> plot_eq_angle(ax, 270, 45, marker='h', color='blue', markersize=12)
+    >>> plot_eq_angle(180, 45)
+    >>> plot_eq_angle(270, 45, marker='h', color='blue', markersize=12)
 
     Call function(s)
     --------------
     - sph_to_eq_angle
     """
 
-    x, y = sph_to_eq_angle(trend, dip)
+    x, y = sph_to_eq_angle(azimuth, dip)
 
     return axe.plot(x, y, 'o', **kwargs)
 
 
-def sph_to_eq_area(trend, dip):
+def sph_to_eq_area(azimuth, dip):
     """Calculate the spherical coordinates of a line in an equal area stereographic
     projection of unit radius
 
     Parameters
     ----------
-    trend : scalar or array_like with values between 0 and 360
-        line direction (azimuth) in spherical coordinates (degrees)
+    azimuth : scalar or array_like with values between 0 and 360
+        angle between the north vector and the line on the horizontal
+        plane in spherical coordinates (0 - 360 degrees)
 
     dip : scalar or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
@@ -201,50 +213,52 @@ def sph_to_eq_area(trend, dip):
     """
 
     # convert degrees to radians
-    trend = np.deg2rad(trend)
+    azimuth = np.deg2rad(azimuth)
     dip = np.deg2rad(dip)
 
-    x = np.sqrt(2) * np.sin((np.pi / 4.0) - (dip / 2)) * np.sin(trend)
-    y = np.sqrt(2) * np.sin((np.pi / 4.0) - (dip / 2)) * np.cos(trend)
+    x = np.sqrt(2) * np.sin((np.pi / 4.0) - (dip / 2)) * np.sin(azimuth)
+    y = np.sqrt(2) * np.sin((np.pi / 4.0) - (dip / 2)) * np.cos(azimuth)
 
     return x, y
 
 
-def sph_to_eq_angle(trend, dip):
-    """Calculate the spherical coordinates of a line in an equal angle stereographic
-    projection of unit radius
+def sph_to_eq_angle(azimuth, dip):
+    """Calculate the spherical coordinates of a line in an equal angle
+    stereographic projection of unit radius
 
     Parameters
     ----------
-    trend : scalar or array_like with values between 0 and 360
-        line direction (azimuth) in spherical coordinates (degrees)
+    azimuth : scalar or array_like with values between 0 and 360
+        angle between the north vector and the line on the horizontal
+        plane in spherical coordinates (0 - 360 degrees)
 
     dip : scalar or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
 
     Returns
     -------
-    a float or numpy array with the stereographic equal-angle coordinates (x, y)
+    a float or numpy array with the coordinates (x, y)
     """
 
     # convert degrees to radians
-    trend = np.deg2rad(trend)
+    azimuth = np.deg2rad(azimuth)
     dip = np.deg2rad(dip)
 
-    x = np.tan((np.pi / 4.0) - (dip / 2)) * np.sin(trend)
-    y = np.tan((np.pi / 4.0) - (dip / 2)) * np.cos(trend)
+    x = np.tan((np.pi / 4.0) - (dip / 2)) * np.sin(azimuth)
+    y = np.tan((np.pi / 4.0) - (dip / 2)) * np.cos(azimuth)
 
     return x, y
 
 
-def sph_to_cart(trend, dip, plot3D=False):
-    """Convert from spherical (azimuth, dip) to cartesian coordinates using...TODO.
+def sph_to_cart(azimuth, dip, plot3D=False):
+    """Convert from spherical (azimuth, dip) to cartesian coordinates.
     It returns the north, east, and down direction cosines of a line.
 
     Parameters
     ----------
-    trend : scalar or array-like with values between 0 and 360
-        line direction (azimuth) in spherical coordinates (degrees)
+    azimuth : scalar or array_like with values between 0 and 360
+        angle between the north vector and the line on the horizontal
+        plane in spherical coordinates (0 - 360 degrees)
 
     dip : scalar or array_like with values between 0 and 90
         plunge or dip of line in spherical coordinates (degrees)
@@ -255,36 +269,36 @@ def sph_to_cart(trend, dip, plot3D=False):
     """
 
     # convert degrees to radians
-    trend = np.deg2rad(trend)
+    azimuth = np.deg2rad(azimuth)
     dip = np.deg2rad(dip)
 
     # estimate direction cosines
-    east_cos = np.cos(dip) * np.sin(trend)
-    north_cos = np.cos(dip) * np.cos(trend)
+    east_cos = np.cos(dip) * np.sin(azimuth)
+    north_cos = np.cos(dip) * np.cos(azimuth)
     down_cos = np.sin(dip)
 
     if plot3D is True:
         from mpl_toolkits.mplot3d import Axes3D
         figura = plt.figure()
-        ax3d = figura.add_subplot(111, projection='3d')
+        ax3d = figura.add_subplot(111, projection=Axes3D.name)
         ax3d.scatter(xs=north_cos, ys=east_cos, zs=down_cos, zdir='z')
 
     return north_cos, east_cos, down_cos
 
 
 def cart_to_sph(north_cos, east_cos, down_cos):
-    """Convert from cartesian to spherical coordinates. It returns the
-    azimuth and the plunge of a line (spherical coordinates).
+    """Convert from cartesian to spherical coordinates and returns the
+    azimuth and the plunge of a line.
 
     Parameters
     ----------
-    north_cos : integer, float, or array-like
+    north_cos : scalar or array-like
         north direction cosine
 
-    east_cos : integer, float, or array-like
+    east_cos : scalar or array-like
         east direction cosine
 
-    down_cos : integer, float, or array-like
+    down_cos : scalar or array-like
         down direction cosine
 
     Call function
@@ -302,9 +316,9 @@ def cart_to_sph(north_cos, east_cos, down_cos):
     # calculate azimuth
     if north_cos == 0.0:  # north direction cosine zero case
         if east_cos < 0.0:
-            azimuth = (3 / 2) * np.pi  # trend is West
+            azimuth = (3 / 2) * np.pi  # azimuth is West
         else:
-            azimuth = (1 / 2) * np.pi  # trend is East
+            azimuth = (1 / 2) * np.pi  # azimuth is East
 
     else:
         azimuth = np.arctan(east_cos / north_cos)
@@ -322,12 +336,12 @@ def cart_to_sph(north_cos, east_cos, down_cos):
     return azimuth, dip
 
 
-def mean_vector(trend, dip, conf=95):
+def mean_vector(azimuth, dip, conf=95):
     """Estimate the mean vector for a given set of vectors.
 
     Parameters
     ----------
-    trend : scalar or array-like with values between 0 and 360
+    azimuth : scalar or array-like with values between 0 and 360
         line direction (azimuth) in spherical coordinates (degrees)
 
     plunge : scalar or array_like with values between 0 and 90
@@ -343,13 +357,13 @@ def mean_vector(trend, dip, conf=95):
 
     Returns
     -------
-    mean trend and dip
+    mean azimuth and dip
     """
 
-    n = len(trend)
+    n = len(azimuth)
 
     # sum the different cosine directions
-    Nc, Ec, dc = sph_to_cart(trend, dip)
+    Nc, Ec, dc = sph_to_cart(azimuth, dip)
     Nc_sum = np.sum(Nc)
     Ec_sum = np.sum(Ec)
     dc_sum = np.sum(dc)
@@ -361,7 +375,6 @@ def mean_vector(trend, dip, conf=95):
     # check significance
     if rave < 0.1:
         print('Mean vector is insignificant')
-
     else:
         Nc_sum = Nc_sum / R
         Ec_sum = Ec_sum / R
@@ -373,8 +386,8 @@ def mean_vector(trend, dip, conf=95):
         Ec_sum = -Ec_sum
         dc_sum = -dc_sum
 
-    # convert direction cosines to spherical coordinates (trend and dip)
-    trend, dip = cart_to_sph(Nc_sum, Ec_sum, dc_sum)
+    # convert direction cosines to spherical coordinates (azimuth and dip)
+    azimuth, dip = cart_to_sph(Nc_sum, Ec_sum, dc_sum)
 
     # Fisher statistics based on Fisher et al. (1987)
     # Estimate concentration factor
@@ -391,12 +404,12 @@ def mean_vector(trend, dip, conf=95):
         afact = 1.0 / (1.0 - conf)
         d = np.arccos(1.0 - ((n - R) / R) * (afact**(bfact - 1.0)))
 
-    print('Mean vector =', trend, '/', dip, 'trend/dip')
+    print('Mean vector = {a}/{b} azimuth/dip' .format(a=azimuth, b=dip))
     print('Fisher statistics:')
     print('concentration factor =', conc)
-    print('uncertainty cone =', d, r'at {n} % level of confidence' .format(n=conf))
+    print(r'uncertainty cone = {a} at {b} % level of confidence' .format(a=d, b=conf))
 
-    return trend, dip
+    return azimuth, dip
 
 
 def zero_to_pi(azimuth):
