@@ -8,7 +8,7 @@ So far, the script only performs basic tasks. One function tweaks the default fe
 
 ## Requirements
 
-The script requires Python 3.5 or higher and the scientific libraries Numpy (1.11 or higher), Matplotlib (2.0 or higher) and Pandas. For this, we recommend installing the [Continuum Anaconda](https://store.continuum.io/cshop/anaconda/) or the [Enthought Canopy](https://www.enthought.com/products/canopy/) and use the Spyder or Canopy IDEs respectively.
+The script requires Python 3.5 or higher and the scientific libraries Numpy (1.11 or higher), Matplotlib (2.0 or higher) and Pandas. For this, we recommend installing the [Continuum Anaconda](https://www.anaconda.com/distribution/) or the [Enthought Canopy](https://www.enthought.com/products/canopy/) and use the Spyder or the Canopy IDEs respectively.
 
 ## Quick examples
 

@@ -407,7 +407,7 @@ def mean_vector(azimuth, dip, conf=95):
     print('Mean vector = {a}/{b} azimuth/dip' .format(a=azimuth, b=dip))
     print('Fisher statistics:')
     print('concentration factor =', conc)
-    print(r'uncertainty cone = {a} at {b} % level of confidence' .format(a=d, b=conf))
+    print('uncertainty cone = {a} at {b} % level of confidence' .format(a=d, b=conf))
 
     return azimuth, dip
 
