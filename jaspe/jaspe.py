@@ -364,9 +364,7 @@ def mean_vector(azimuth, dip, conf=95):
 
     # sum the different cosine directions
     Nc, Ec, dc = sph_to_cart(azimuth, dip)
-    Nc_sum = np.sum(Nc)
-    Ec_sum = np.sum(Ec)
-    dc_sum = np.sum(dc)
+    Nc_sum, Ec_sum, dc_sum = np.sum(Nc), np.sum(Ec), np.sum(dc)
 
     # Estimate the resultant vector (R)
     R = np.sqrt(Nc_sum**2 + Ec_sum**2 + dc_sum**2)
@@ -376,21 +374,17 @@ def mean_vector(azimuth, dip, conf=95):
     if rave < 0.1:
         print('Mean vector is insignificant')
     else:
-        Nc_sum = Nc_sum / R
-        Ec_sum = Ec_sum / R
-        dc_sum = dc_sum / R
+        Nc_sum, Ec_sum, dc_sum = Nc_sum / R, Ec_sum / R, dc_sum / R
 
     # convert mean vector to lower hemisphere
     if dc_sum < 0.0:
-        Nc_sum = -Nc_sum
-        Ec_sum = -Ec_sum
-        dc_sum = -dc_sum
+        Nc_sum, Ec_sum, dc_sum = -Nc_sum, -Ec_sum, -dc_sum
 
     # convert direction cosines to spherical coordinates (azimuth and dip)
     azimuth, dip = cart_to_sph(Nc_sum, Ec_sum, dc_sum)
 
-    # Fisher statistics based on Fisher et al. (1987)
-    # Estimate concentration factor
+    # Estimate statistics based on Fisher et al. (1987)
+    # Concentration factor
     if R < n:
         if n < 16:
             afact = 1.0 - (1.0 / n)
@@ -423,8 +417,7 @@ def zero_to_pi(azimuth):
 
     if azimuth < 0.0:
         azimuth = azimuth + (2 * np.pi)
-
-    elif azimuth >= 0.0:
+    else:
         azimuth = azimuth - (2 * np.pi)
 
     return azimuth
