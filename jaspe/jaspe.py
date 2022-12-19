@@ -103,23 +103,19 @@ def set_stereo(ax):
         the axes
     """
 
-    # remove default matplotlib elements with no interest
-    ax.tick_params(
-        axis='both',
-        which='both',
-        bottom=False,
-        top=False,
-        left=False,
-        labelbottom=False,
-        labelleft=False)
-
     # draw the contour and the centre of the circle
     ax.plot(0, 0, 'k+')
     circ = plt.Circle((0, 0), 1.0, facecolor='none', edgecolor='black')
     ax.add_patch(circ)
 
-    ax.axis('equal')  # equal aspect ratio
-    ax.axis('off')  # remove the box
+    # draw basic plot elements (ticks, reference)
+    # TODO
+
+    # draw grids (optional)
+    # TODO
+
+    ax.set_axis_off()  # remove the box, ticks, etc.
+    ax.axis('equal')  # ensure equal aspect ratio
 
     return None
 
